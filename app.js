@@ -115,6 +115,9 @@ app.put('/api/books/:_id', (req, res) => {
     });
 
 });
+app.use(function(req, res, next) {
+    res.sendFile(__dirname + "/public/index.html");
+})
 app.delete('/api/books/:_id', (req, res) => {
     let id = req.params._id;
     Book.deleteBook(id, function(err, book) {
