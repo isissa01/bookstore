@@ -24,6 +24,8 @@ app.all('*', function(request, response, next) {
 app.use(express.static(__dirname + "/public"));
 // Connect to mongoose
 mongoose.connect("mongodb://localhost/bookstore", { useMongoClient: true });
+// mongoose.connection.openUri("mongodb://admin:1234@ds163613.mlab.com:63613/issa_bookstore");
+mongoose.connection.openUri("mongodb://ds163613.mlab.com:63613/issa_bookstore", { useMongoClient: true, user: "admin", pass: "1234" });
 let db = mongoose.connection;
 
 // body-parser Middle Ware
@@ -115,9 +117,7 @@ app.put('/api/books/:_id', (req, res) => {
     });
 
 });
-app.use(function(req, res, next) {
-    res.sendFile(__dirname + "/public/index.html");
-})
+
 app.delete('/api/books/:_id', (req, res) => {
     let id = req.params._id;
     Book.deleteBook(id, function(err, book) {
@@ -127,6 +127,10 @@ app.delete('/api/books/:_id', (req, res) => {
         res.json(book);
     });
 
+});
+
+app.use(function(req, res, next) {
+    res.sendFile(__dirname + "/public/index.html");
 });
 app.listen(3000);
 console.log("listening on port 3000");
